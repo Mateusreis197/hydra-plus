@@ -4,7 +4,13 @@ import json
 import os
 from datetime import date
 
+from src.weather import get_temperature, get_water_recommendation
+
 DATA_FILE = "data.json"
+
+# Coordenadas padrão: Brasília, Brasil
+DEFAULT_LATITUDE = -15.7801
+DEFAULT_LONGITUDE = -47.9292
 
 MOTIVATIONAL_PHRASES = [
     "💧 Cada gole conta! Continue assim!",
@@ -62,16 +68,19 @@ def get_progress(data: dict) -> dict:
     return {"consumed": consumed, "goal": goal, "percentage": round(percentage, 1)}
 
 
-def show_menu() -> None:
+def show_menu(temperature: float | None = None) -> None:
     """Exibe o menu principal."""
     print("\n" + "=" * 30)
     print("       💧 HYDRA+ 💧")
+    if temperature is not None:
+        print(f"   🌡️  Temperatura atual: {temperature}°C")
     print("=" * 30)
     print("1 - Definir meta diária")
     print("2 - Registrar consumo de água")
     print("3 - Ver progresso do dia")
     print("4 - Histórico do dia")
-    print("5 - Sair")
+    print("5 - Ver recomendação climática")
+    print("6 - Sair")
     print("=" * 30)
 
 
@@ -81,8 +90,15 @@ def main() -> None:
 
     data = load_data()
 
+    print("🌐 Buscando temperatura local...")
+    temperature = get_temperature(DEFAULT_LATITUDE, DEFAULT_LONGITUDE)
+    if temperature is not None:
+        print(f"✅ Temperatura obtida: {temperature}°C")
+    else:
+        print("⚠️ Não foi possível obter a temperatura. Modo offline ativo.")
+
     while True:
-        show_menu()
+        show_menu(temperature)
         choice = input("Escolha uma opção: ").strip()
 
         if choice == "1":
@@ -123,6 +139,15 @@ def main() -> None:
             print(f"   Total consumido: {consumed}ml")
 
         elif choice == "5":
+            if temperature is not None:
+                rec = get_water_recommendation(temperature)
+                print(f"\n{rec['message']}")
+                if rec["extra_ml"] > 0:
+                    print(f"   💡 Sugestão: beba +{rec['extra_ml']}ml além da sua meta.")
+            else:
+                print("⚠️ Temperatura indisponível. Verifique sua conexão.")
+
+        elif choice == "6":
             print("👋 Até logo! Lembre-se de se hidratar!")
             break
 
