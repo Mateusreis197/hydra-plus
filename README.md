@@ -2,7 +2,7 @@
 
 > Assistente de hidratação e autocuidado via linha de comando.
 
-![CI](https://github.com/SEU_USUARIO/hydra-plus/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/Mateusreis197/hydra-plus/actions/workflows/ci.yml/badge.svg)
 
 ## 🎯 Problema Real
 
@@ -70,4 +70,4 @@ Mateus
 
 ## 🔗 Repositório
 
-https://github.com/SEU_USUARIO/hydra-plus
+https://github.com/Mateusreis197/hydra-plus
