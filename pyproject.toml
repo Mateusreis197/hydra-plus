@@ -1,0 +1,16 @@
+[project]
+name = "hydra-plus"
+version = "1.0.0"
+description = "Assistente de hidratação e autocuidado via CLI"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+hydra-plus = "src.hydra:main"
+
+[tool.ruff]
+line-length = 88
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
